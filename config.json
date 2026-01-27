@@ -1,0 +1,8 @@
+{
+  "currentToken": "oct2024_abc123def456",
+  "tokenExpiry": "2024-10-31T23:59:59",
+  "nextToken": "nov2024_xyz789uvw012",
+  "nextTokenActivation": "2024-11-01T00:00:00",
+  "allowedDomains": ["github.io"],
+  "maxAttempts": 3
+}

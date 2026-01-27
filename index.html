@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密访问页面</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div id="auth-screen" class="screen">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                <h1>安全访问</h1>
+            </div>
+            
+            <div class="auth-box">
+                <div class="qr-overlay">
+                    <i class="fas fa-qrcode"></i>
+                    <p>请使用本月有效二维码扫描访问</p>
+                </div>
+                
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>验证中...</p>
+                </div>
+                
+                <div id="content" class="content hidden">
+                    <!-- 这里放置你的实际内容 -->
+                    <h2>欢迎访问加密系统</h2>
+                    <div class="info-card">
+                        <h3><i class="fas fa-calendar-check"></i> 本月有效</h3>
+                        <p>当前访问时间: <span id="current-date"></span></p>
+                        <p>有效期至: <span id="expiry-date"></span></p>
+                    </div>
+                    
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>安全加密</h4>
+                            <p>每月动态更新访问凭证</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>移动优化</h4>
+                            <p>完美适配手机端访问</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-sync-alt"></i>
+                            <h4>自动更新</h4>
+                            <p>每月自动更换安全密钥</p>
+                        </div>
+                    </div>
+                    
+                    <div class="actions">
+                        <button onclick="window.open('your-app-url', '_blank')" class="btn-primary">
+                            <i class="fas fa-external-link-alt"></i> 进入系统
+                        </button>
+                        <button onclick="location.reload()" class="btn-secondary">
+                            <i class="fas fa-redo"></i> 重新验证
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="error" class="error hidden">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>访问被拒绝</h3>
+                    <p id="error-message"></p>
+                    <button onclick="location.reload()" class="btn-retry">
+                        <i class="fas fa-redo"></i> 重试
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p><i class="fas fa-info-circle"></i> 如需获取新二维码，请联系系统管理员</p>
+                <p class="version">v1.0 | 有效期: <span id="token-month"></span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

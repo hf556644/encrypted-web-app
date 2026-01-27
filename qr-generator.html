@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码生成器</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn:hover { background: #45a049; }
+        .btn-secondary { background: #008CBA; }
+        .btn-secondary:hover { background: #007B9A; }
+        .qr-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        #qrcode {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ddd;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .token-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .expiry-info {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 二维码生成器</h1>
+        
+        <div class="form-group">
+            <label for="month">选择月份：</label>
+            <select id="month">
+                <option value="01">一月</option>
+                <option value="02">二月</option>
+                <option value="03">三月</option>
+                <option value="04">四月</option>
+                <option value="05">五月</option>
+                <option value="06">六月</option>
+                <option value="07">七月</option>
+                <option value="08">八月</option>
+                <option value="09">九月</option>
+                <option value="10">十月</option>
+                <option value="11">十一月</option>
+                <option value="12">十二月</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="year">年份：</label>
+            <input type="number" id="year" value="2024" min="2024" max="2030">
+        </div>
+        
+        <button onclick="generateToken()" class="btn">生成新令牌</button>
+        <button onclick="updateConfig()" class="btn btn-secondary">更新配置文件</button>
+        
+        <div class="token-display">
+            <strong>当前令牌：</strong>
+            <span id="currentToken">未生成</span>
+            <div class="expiry-info">
+                有效期至：<span id="expiryDate">-</span>
+            </div>
+        </div>
+        
+        <div class="qr-container">
+            <h3>扫描二维码</h3>
+            <div id="qrcode"></div>
+            <div class="controls">
+                <button onclick="downloadQR()" class="btn">下载二维码</button>
+                <button onclick="printQR()" class="btn btn-secondary">打印二维码</button>
+            </div>
+            <p>扫码地址：<span id="qrUrl">-</span></p>
+        </div>
+    </div>
+    
+    <script>
+        // 生成随机令牌
+        function generateToken() {
+            const month = document.getElementById('month').value;
+            const year = document.getElementById('year').value;
+            
+            // 生成随机字符串
+            const randomStr = Math.random().toString(36).substring(2, 15) + 
+                            Math.random().toString(36).substring(2, 15);
+            
+            // 创建格式化的token: monthYear_random
+            const token = `${month}${year}_${randomStr}`;
+            
+            // 计算过期时间（月底）
+            const expiryDate = new Date(year, month, 0); // 月份的最后一天
+            const expiryStr = expiryDate.toISOString().split('T')[0] + 'T23:59:59';
+            
+            // 显示信息
+            document.getElementById('currentToken').textContent = token;
+            document.getElementById('expiryDate').textContent = expiryStr;
+            
+            // 生成二维码
+            const baseUrl = window.location.origin + window.location.pathname.replace('qr-generator.html', '');
+            const qrUrl = `${baseUrl}?token=${token}`;
+            document.getElementById('qrUrl').textContent = qrUrl;
+            
+            // 生成二维码图像
+            const qrcodeDiv = document.getElementById('qrcode');
+            qrcodeDiv.innerHTML = '';
+            QRCode.toCanvas(qrcodeDiv, qrUrl, { width: 200 }, function(error) {
+                if (error) console.error(error);
+            });
+            
+            // 保存到本地存储
+            const config = {
+                currentToken: token,
+                tokenExpiry: expiryStr,
+                generatedDate: new Date().toISOString()
+            };
+            localStorage.setItem('qrConfig', JSON.stringify(config));
+            
+            alert('令牌生成成功！');
+        }
+        
+        // 更新配置文件
+        function updateConfig() {
+            const config = JSON.parse(localStorage.getItem('qrConfig') || '{}');
+            
+            if (!config.currentToken) {
+                alert('请先生成令牌！');
+                return;
+            }
+            
+            // 创建配置文件内容
+            const configData = {
+                currentToken: config.currentToken,
+                tokenExpiry: config.tokenExpiry,
+                nextToken: "", // 下个月手动设置
+                nextTokenActivation: "", // 下个月激活时间
+                allowedDomains: ["github.io"],
+                maxAttempts: 3
+            };
+            
+            // 下载配置文件
+            const blob = new Blob([JSON.stringify(configData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('配置文件已生成，请上传到服务器替换旧的config.json');
+        }
+        
+        // 下载二维码
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                alert('请先生成二维码！');
+                return;
+            }
+            
+            const month = document.getElementById('month').value;
+            const year = document.getElementById('year').value;
+            const link = document.createElement('a');
+            link.download = `qr-code-${year}-${month}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // 打印二维码
+        function printQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                alert('请先生成二维码！');
+                return;
+            }
+            
+            const dataUrl = canvas.toDataURL('image/png');
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>打印二维码</title>
+                        <style>
+                            body { text-align: center; padding: 50px; }
+                            img { max-width: 400px; }
+                            .info { margin-top: 20px; font-family: Arial; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>访问二维码</h2>
+                        <img src="${dataUrl}">
+                        <div class="info">
+                            <p>有效期至: ${document.getElementById('expiryDate').textContent}</p>
+                            <p>生成时间: ${new Date().toLocaleDateString()}</p>
+                        </div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        }
+        
+        // 页面加载时检查本地存储
+        window.onload = function() {
+            const now = new Date();
+            const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+            const currentYear = now.getFullYear();
+            
+            document.getElementById('month').value = currentMonth;
+            document.getElementById('year').value = currentYear;
+            
+            // 检查是否有保存的配置
+            const savedConfig = JSON.parse(localStorage.getItem('qrConfig') || '{}');
+            if (savedConfig.currentToken) {
+                document.getElementById('currentToken').textContent = savedConfig.currentToken;
+                document.getElementById('expiryDate').textContent = savedConfig.tokenExpiry;
+            }
+        };
+    </script>
+</body>
+</html>
