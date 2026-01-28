@@ -13,22 +13,18 @@ class AuthSystem {
         return params.get('token') || params.get('t');
     }
 
+    // 获取当前月份（两位数字，如01、02）
+    getCurrentMonth() {
+        const now = new Date();
+        const month = now.getMonth() + 1;
+        return month.toString().padStart(2, '0');
+    }
+
     // 加载配置
     async loadConfig() {
         try {
-            // 使用相对路径，确保能正确找到config.json
-            const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-            const configUrl = basePath + 'config.json';
-            
-            console.log('正在加载配置文件:', configUrl);
-            const response = await fetch(configUrl);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP错误 ${response.status}: ${response.statusText}`);
-            }
-            
+            const response = await fetch('config.json');
             this.config = await response.json();
-            console.log('配置加载成功:', this.config);
             return true;
         } catch (error) {
             console.error('加载配置失败:', error);
@@ -46,16 +42,18 @@ class AuthSystem {
             throw new Error('系统配置加载失败');
         }
 
-        // 检查是否在有效期内
-        const now = new Date();
-        const expiry = new Date(this.config.tokenExpiry);
+        // 获取当前月份
+        const currentMonth = this.getCurrentMonth();
         
-        if (now > expiry) {
-            throw new Error('访问令牌已过期，请获取新二维码');
+        // 检查当前月份是否有对应的令牌
+        if (!this.config.tokens || !this.config.tokens[currentMonth]) {
+            throw new Error('本月暂无有效访问令牌，请联系管理员');
         }
 
         // 验证token是否匹配
-        if (this.currentToken !== this.config.currentToken) {
+        const monthToken = this.config.tokens[currentMonth];
+        
+        if (this.currentToken !== monthToken) {
             this.attempts++;
             if (this.attempts >= this.maxAttempts) {
                 throw new Error('验证失败次数过多，请重新扫描二维码');
@@ -70,7 +68,9 @@ class AuthSystem {
     updatePageInfo() {
         if (!this.config) return;
         
-        const expiry = new Date(this.config.tokenExpiry);
+        const currentMonth = this.getCurrentMonth();
+        const expiry = new Date(new Date().getFullYear(), parseInt(currentMonth), 0); // 当月最后一天
+        
         const currentDate = document.getElementById('current-date');
         const expiryDate = document.getElementById('expiry-date');
         const tokenMonth = document.getElementById('token-month');
@@ -121,13 +121,6 @@ class AuthSystem {
             const errorMessage = document.getElementById('error-message');
             if (errorMessage) errorMessage.textContent = errorMsg;
             if (error) error.classList.remove('hidden');
-            
-            // 如果是无效token，清除URL中的token参数
-            if (errorMsg.includes('无效的访问令牌') || errorMsg.includes('已过期')) {
-                setTimeout(() => {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }, 3000);
-            }
         }
     }
 
