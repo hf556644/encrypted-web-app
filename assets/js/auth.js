@@ -16,8 +16,19 @@ class AuthSystem {
     // 加载配置
     async loadConfig() {
         try {
-            const response = await fetch('config.json');
+            // 使用相对路径，确保能正确找到config.json
+            const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+            const configUrl = basePath + 'config.json';
+            
+            console.log('正在加载配置文件:', configUrl);
+            const response = await fetch(configUrl);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP错误 ${response.status}: ${response.statusText}`);
+            }
+            
             this.config = await response.json();
+            console.log('配置加载成功:', this.config);
             return true;
         } catch (error) {
             console.error('加载配置失败:', error);
@@ -57,25 +68,34 @@ class AuthSystem {
 
     // 更新页面信息
     updatePageInfo() {
+        if (!this.config) return;
+        
         const expiry = new Date(this.config.tokenExpiry);
-        document.getElementById('current-date').textContent = 
-            new Date().toLocaleDateString('zh-CN', {
+        const currentDate = document.getElementById('current-date');
+        const expiryDate = document.getElementById('expiry-date');
+        const tokenMonth = document.getElementById('token-month');
+        
+        if (currentDate) {
+            currentDate.textContent = new Date().toLocaleDateString('zh-CN', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
             });
+        }
         
-        document.getElementById('expiry-date').textContent = 
-            expiry.toLocaleDateString('zh-CN', {
+        if (expiryDate) {
+            expiryDate.textContent = expiry.toLocaleDateString('zh-CN', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
+        }
         
-        document.getElementById('token-month').textContent = 
-            expiry.toLocaleDateString('zh-CN', { month: 'long', year: 'numeric' });
+        if (tokenMonth) {
+            tokenMonth.textContent = expiry.toLocaleDateString('zh-CN', { month: 'long', year: 'numeric' });
+        }
     }
 
     // 主验证流程
@@ -88,18 +108,19 @@ class AuthSystem {
             await this.validateToken();
             
             // 验证成功
-            loading.classList.add('hidden');
+            if (loading) loading.classList.add('hidden');
             this.updatePageInfo();
-            content.classList.remove('hidden');
+            if (content) content.classList.remove('hidden');
             
             // 记录访问日志
             this.logAccess();
             
         } catch (errorMsg) {
             // 验证失败
-            loading.classList.add('hidden');
-            document.getElementById('error-message').textContent = errorMsg;
-            error.classList.remove('hidden');
+            if (loading) loading.classList.add('hidden');
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) errorMessage.textContent = errorMsg;
+            if (error) error.classList.remove('hidden');
             
             // 如果是无效token，清除URL中的token参数
             if (errorMsg.includes('无效的访问令牌') || errorMsg.includes('已过期')) {
@@ -110,13 +131,13 @@ class AuthSystem {
         }
     }
 
-    // 记录访问日志（示例，实际中可能需要后端支持）
+    // 记录访问日志
     logAccess() {
         const log = {
             timestamp: new Date().toISOString(),
             userAgent: navigator.userAgent,
-            token: this.currentToken.substring(0, 8) + '...', // 只记录部分token
-            ip: '...' // 实际中需要通过后端获取
+            token: this.currentToken ? this.currentToken.substring(0, 8) + '...' : 'none',
+            verified: true
         };
         console.log('访问记录:', log);
     }
