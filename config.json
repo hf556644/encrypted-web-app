@@ -1,10 +1,18 @@
 {
-  "currentToken": "012026_wjzov15rzab2zf30imghd8",
-  "tokenExpiry": "2026-01-30T23:59:59",
-  "nextToken": "",
-  "nextTokenActivation": "",
-  "allowedDomains": [
-    "github.io"
-  ],
+  "tokens": {
+    "01": "012026_9yico8i92xu631tiimbkw",
+    "02": "022026_bbbbbbbbbbbb", 
+    "03": "032026_cccccccccccc",
+    "04": "042026_dddddddddddd",
+    "05": "052026_eeeeeeeeeeee",
+    "06": "062026_ffffffffffff",
+    "07": "072026_gggggggggggg",
+    "08": "082026_hhhhhhhhhhhh",
+    "09": "092026_iiiiiiiiiiii",
+    "10": "102026_jjjjjjjjjjjj",
+    "11": "112026_kkkkkkkkkkkk",
+    "12": "122026_llllllllllll"
+  },
+  "allowedDomains": ["github.io"],
   "maxAttempts": 3
 }
