@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>二维码生成器</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- 使用稳定的二维码库 -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,6 +41,7 @@
             cursor: pointer;
             font-size: 16px;
             margin-right: 10px;
+            margin-bottom: 10px;
         }
         .btn:hover { background: #45a049; }
         .btn-secondary { background: #008CBA; }
@@ -71,11 +73,22 @@
             font-size: 14px;
             margin-top: 10px;
         }
+        .error {
+            color: red;
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📱 二维码生成器</h1>
+        
+        <div id="library-check" class="error" style="display: none;">
+            正在加载二维码库，请稍候...
+        </div>
         
         <div class="form-group">
             <label for="month">选择月份：</label>
@@ -97,7 +110,7 @@
         
         <div class="form-group">
             <label for="year">年份：</label>
-            <input type="number" id="year" value="2024" min="2024" max="2030">
+            <input type="number" id="year" value="2026" min="2024" max="2030">
         </div>
         
         <button onclick="generateToken()" class="btn">生成新令牌</button>
@@ -123,8 +136,25 @@
     </div>
     
     <script>
+        // 检查QRCode库是否加载成功
+        function checkLibrary() {
+            if (typeof QRCode === 'undefined') {
+                document.getElementById('library-check').style.display = 'block';
+                document.getElementById('library-check').innerHTML = 
+                    '错误：二维码库加载失败。请刷新页面重试，或检查网络连接。';
+                return false;
+            }
+            document.getElementById('library-check').style.display = 'none';
+            return true;
+        }
+        
         // 生成随机令牌
         function generateToken() {
+            if (!checkLibrary()) {
+                alert('二维码库未加载，无法生成二维码。请刷新页面重试。');
+                return;
+            }
+            
             const month = document.getElementById('month').value;
             const year = document.getElementById('year').value;
             
@@ -151,9 +181,18 @@
             // 生成二维码图像
             const qrcodeDiv = document.getElementById('qrcode');
             qrcodeDiv.innerHTML = '';
-            QRCode.toCanvas(qrcodeDiv, qrUrl, { width: 200 }, function(error) {
-                if (error) console.error(error);
-            });
+            
+            try {
+                QRCode.toCanvas(qrcodeDiv, qrUrl, { width: 200 }, function(error) {
+                    if (error) {
+                        console.error('生成二维码失败:', error);
+                        qrcodeDiv.innerHTML = '<div class="error">生成二维码失败，请重试</div>';
+                    }
+                });
+            } catch (error) {
+                console.error('二维码库错误:', error);
+                qrcodeDiv.innerHTML = '<div class="error">二维码库错误，请刷新页面</div>';
+            }
             
             // 保存到本地存储
             const config = {
@@ -168,19 +207,20 @@
         
         // 更新配置文件
         function updateConfig() {
-            const config = JSON.parse(localStorage.getItem('qrConfig') || '{}');
+            const token = document.getElementById('currentToken').textContent;
+            const expiry = document.getElementById('expiryDate').textContent;
             
-            if (!config.currentToken) {
+            if (!token || token === '未生成') {
                 alert('请先生成令牌！');
                 return;
             }
             
             // 创建配置文件内容
             const configData = {
-                currentToken: config.currentToken,
-                tokenExpiry: config.tokenExpiry,
-                nextToken: "", // 下个月手动设置
-                nextTokenActivation: "", // 下个月激活时间
+                currentToken: token,
+                tokenExpiry: expiry,
+                nextToken: "",
+                nextTokenActivation: "",
                 allowedDomains: ["github.io"],
                 maxAttempts: 3
             };
@@ -251,21 +291,25 @@
             }, 500);
         }
         
-        // 页面加载时检查本地存储
+        // 页面加载时检查库是否加载成功
         window.onload = function() {
-            const now = new Date();
-            const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
-            const currentYear = now.getFullYear();
-            
-            document.getElementById('month').value = currentMonth;
-            document.getElementById('year').value = currentYear;
-            
-            // 检查是否有保存的配置
-            const savedConfig = JSON.parse(localStorage.getItem('qrConfig') || '{}');
-            if (savedConfig.currentToken) {
-                document.getElementById('currentToken').textContent = savedConfig.currentToken;
-                document.getElementById('expiryDate').textContent = savedConfig.tokenExpiry;
-            }
+            setTimeout(() => {
+                checkLibrary();
+                
+                const now = new Date();
+                const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+                const currentYear = now.getFullYear();
+                
+                document.getElementById('month').value = currentMonth;
+                document.getElementById('year').value = currentYear;
+                
+                // 检查是否有保存的配置
+                const savedConfig = JSON.parse(localStorage.getItem('qrConfig') || '{}');
+                if (savedConfig.currentToken) {
+                    document.getElementById('currentToken').textContent = savedConfig.currentToken;
+                    document.getElementById('expiryDate').textContent = savedConfig.tokenExpiry;
+                }
+            }, 1000);
         };
     </script>
 </body>
