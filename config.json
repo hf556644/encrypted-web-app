@@ -1,18 +1,20 @@
 {
   "tokens": {
-    "01": "012026_9yico8i92xu631tiimbkw",
-    "02": "022026_bbbbbbbbbbbb", 
-    "03": "032026_cccccccccccc",
-    "04": "042026_dddddddddddd",
-    "05": "052026_eeeeeeeeeeee",
-    "06": "062026_ffffffffffff",
-    "07": "072026_gggggggggggg",
-    "08": "082026_hhhhhhhhhhhh",
-    "09": "092026_iiiiiiiiiiii",
-    "10": "102026_jjjjjjjjjjjj",
-    "11": "112026_kkkkkkkkkkkk",
-    "12": "122026_llllllllllll"
+    "10": "102026_1tzmgid9ix6nb2ewmf8i",
+    "11": "112026_6u20sbafxykkbedxe0f2pn",
+    "12": "122026_xe6pl1m4qs2p7mmozqe9g",
+    "01": "012026_as8d710iwrtd6k5fvskblr",
+    "02": "022026_g71cyk4x46oj9u6bf1r4h",
+    "03": "032026_37vvldr9v2pyjaqnpc6t5",
+    "04": "042026_ficktsh0egllw4x7u2p7y",
+    "05": "052026_5xkckddvaupozgke4lat5f",
+    "06": "062026_hqfh0srsqf8yj3kg3wo33",
+    "07": "072026_nnl1pe0kfzdr1uo6bh9qrl",
+    "08": "082026_jxryegynpxodw933e91c19",
+    "09": "092026_d4v9acctjyhfhlnpspadhp"
   },
-  "allowedDomains": ["github.io"],
+  "allowedDomains": [
+    "github.io"
+  ],
   "maxAttempts": 3
 }
