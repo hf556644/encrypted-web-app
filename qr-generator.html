@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>二维码生成器</title>
-    <!-- 使用稳定的二维码库 -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/qrcode.min.js"></script>
+    <!-- 使用国内CDN -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -178,20 +178,20 @@
             const qrUrl = `${baseUrl}?token=${token}`;
             document.getElementById('qrUrl').textContent = qrUrl;
             
-            // 生成二维码图像
+            // 生成二维码图像 - 使用qrcodejs 1.0.0
             const qrcodeDiv = document.getElementById('qrcode');
             qrcodeDiv.innerHTML = '';
             
             try {
-                QRCode.toCanvas(qrcodeDiv, qrUrl, { width: 200 }, function(error) {
-                    if (error) {
-                        console.error('生成二维码失败:', error);
-                        qrcodeDiv.innerHTML = '<div class="error">生成二维码失败，请重试</div>';
-                    }
+                // 使用qrcodejs 1.0.0的构造函数
+                new QRCode(qrcodeDiv, {
+                    text: qrUrl,
+                    width: 200,
+                    height: 200
                 });
             } catch (error) {
-                console.error('二维码库错误:', error);
-                qrcodeDiv.innerHTML = '<div class="error">二维码库错误，请刷新页面</div>';
+                console.error('生成二维码失败:', error);
+                qrcodeDiv.innerHTML = '<div class="error">生成二维码失败，请重试</div>';
             }
             
             // 保存到本地存储
@@ -241,7 +241,25 @@
         function downloadQR() {
             const canvas = document.querySelector('#qrcode canvas');
             if (!canvas) {
-                alert('请先生成二维码！');
+                // 如果是img标签，则使用img
+                const img = document.querySelector('#qrcode img');
+                if (!img) {
+                    alert('请先生成二维码！');
+                    return;
+                }
+                // 创建一个临时的canvas来绘制图像并下载
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                
+                const month = document.getElementById('month').value;
+                const year = document.getElementById('year').value;
+                const link = document.createElement('a');
+                link.download = `qr-code-${year}-${month}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
                 return;
             }
             
@@ -256,12 +274,18 @@
         // 打印二维码
         function printQR() {
             const canvas = document.querySelector('#qrcode canvas');
-            if (!canvas) {
-                alert('请先生成二维码！');
-                return;
+            let dataUrl;
+            if (canvas) {
+                dataUrl = canvas.toDataURL('image/png');
+            } else {
+                const img = document.querySelector('#qrcode img');
+                if (!img) {
+                    alert('请先生成二维码！');
+                    return;
+                }
+                dataUrl = img.src;
             }
             
-            const dataUrl = canvas.toDataURL('image/png');
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
