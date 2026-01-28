@@ -1,8 +1,10 @@
 {
-  "currentToken": "oct2024_abc123def456",
-  "tokenExpiry": "2024-10-31T23:59:59",
-  "nextToken": "nov2024_xyz789uvw012",
-  "nextTokenActivation": "2024-11-01T00:00:00",
+  "currentToken": "012026_9yico8i92xu631tiimbkw",
+  "tokenExpiry": "2026-01-30T23:59:59",
+  "nextToken": "",
+  "nextTokenActivation": "",
   "allowedDomains": ["github.io"],
   "maxAttempts": 3
 }
+第一行：更新一月令牌
+第二行：token: 012026_jf50ore6bumn0bx122maf, 有效期至2026-01-30
