@@ -1,8 +1,10 @@
 {
-  "currentToken": "012026_9yico8i92xu631tiimbkw",
+  "currentToken": "012026_91x6zs2szzru817alibl9",
   "tokenExpiry": "2026-01-30T23:59:59",
   "nextToken": "",
   "nextTokenActivation": "",
-  "allowedDomains": ["github.io"],
+  "allowedDomains": [
+    "github.io"
+  ],
   "maxAttempts": 3
 }
