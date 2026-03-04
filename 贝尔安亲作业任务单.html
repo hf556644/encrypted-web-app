@@ -117,40 +117,43 @@
             border: 2px solid #fbb6ce;
         }
         
+        /* 头部信息行 - 极致紧凑 */
         .info-section {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
+            margin-bottom: 10px;
+            gap: 6px; /* 减小间距 */
         }
         
         .info-item {
-            display: flex;
-            flex-direction: column;
             flex: 1;
-            margin-right: 15px;
-            min-width: 120px;
-        }
-        
-        .info-item:last-child {
-            margin-right: 0;
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            padding: 0 3px;          /* 上下内边距为0，左右3px */
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            height: 26px;             /* 进一步降低高度 */
         }
         
         .info-item label {
-            font-size: 13px;
+            font-size: 12px;          /* 稍微减小字体 */
             color: #2d3748;
-            margin-bottom: 3px;
             font-weight: bold;
+            white-space: nowrap;
+            margin-right: 2px;         /* 右边距最小化 */
         }
         
         .info-item input {
-            padding: 6px 0;
             border: none;
-            border-bottom: 1px solid #999;
-            height: 28px;
-            font-size: 14px;
+            border-bottom: 1px solid #cbd5e0;
+            height: 16px;              /* 最小高度 */
+            font-size: 14px;            /* 略微减小字体 */
             background: transparent;
-            width: 100%;
+            flex: 1;
+            min-width: 0;
+            padding: 0 1px;
+            line-height: 16px;
         }
         
         .error-reason-templates {
@@ -226,13 +229,13 @@
             font-weight: 500;
         }
         
-        /* 关键修改：表格宽度设置 */
+        /* 表格设置 */
         .task-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 12px;
             font-size: 12px;
-            table-layout: fixed !important; /* 强制使用固定布局 */
+            table-layout: fixed !important;
         }
         
         .task-table th, .task-table td {
@@ -242,72 +245,42 @@
         .task-table th {
             background-color: #2c5282;
             color: white;
-            padding: 3px 2px;
+            padding: 4px 2px;
             text-align: center;
             font-weight: bold;
             font-size: 12px;
-            height: 28px; /* 固定表头高度 */
+            height: 30px;
         }
         
         .task-table td {
-            padding: 1px 2px; /* 减少内边距以降低行高 */
+            padding: 2px 3px;
             vertical-align: top;
-            height: 32px; /* 固定行高 */
+            height: 36px;
         }
         
-        /* 重新定义列宽 - 确保总和为100% (8+42+10+8+8+8+16=100) */
+        /* 列宽定义 (总和100%) */
         .task-table th:nth-child(1),
-        .task-table td:nth-child(1) { /* 科目列 */
-            width: 8% !important;
-            min-width: 45px;
-            max-width: 50px;
-        }
+        .task-table td:nth-child(1) { width: 8% !important; }
         
         .task-table th:nth-child(2),
-        .task-table td:nth-child(2) { /* 作业任务内容列 */
-            width: 42% !important; /* 从44%减少到42% */
-        }
+        .task-table td:nth-child(2) { width: 42% !important; }
         
         .task-table th:nth-child(3),
-        .task-table td:nth-child(3) { /* 预估时间列 */
-            width: 10% !important; /* 从8%增加到10% */
-            min-width: 50px;
-            max-width: 55px;
-        }
+        .task-table td:nth-child(3) { width: 10% !important; }
         
         .task-table th:nth-child(4),
-        .task-table td:nth-child(4) { /* 实际时间列 */
-            width: 8% !important;
-            min-width: 45px;
-            max-width: 50px;
-        }
+        .task-table td:nth-child(4) { width: 8% !important; }
         
         .task-table th:nth-child(5),
-        .task-table td:nth-child(5) { /* 完成情况列 */
-            width: 8% !important;
-            min-width: 45px;
-            max-width: 50px;
-        }
+        .task-table td:nth-child(5) { width: 8% !important; }
         
         .task-table th:nth-child(6),
-        .task-table td:nth-child(6) { /* 错题数量列 */
-            width: 8% !important;
-            min-width: 45px;
-            max-width: 50px;
-        }
+        .task-table td:nth-child(6) { width: 8% !important; }
         
         .task-table th:nth-child(7),
-        .task-table td:nth-child(7) { /* 错题原因列 */
-            width: 16% !important;
-        }
+        .task-table td:nth-child(7) { width: 16% !important; }
         
-        /* 覆盖原有单元格类，确保新的宽度生效 */
-        .subject-cell, .task-cell, .time-cell, .handwrite-cell, .error-reason-cell {
-            width: auto !important; /* 使用上面的列选择器设置宽度 */
-        }
-        
-        /* 对齐方式 */
-        .subject-cell, .time-cell, 
+        /* 对齐 */
         .task-table td:nth-child(1),
         .task-table td:nth-child(3),
         .task-table td:nth-child(4),
@@ -316,57 +289,46 @@
             text-align: center !important;
         }
         
-        /* 内容区域样式 */
+        /* 表单元素样式 */
         .task-table input, .task-table select, .task-table textarea {
             width: 100%;
-            padding: 1px 2px;
+            padding: 2px 3px;
             border: 1px solid #ddd;
             border-radius: 2px;
-            font-size: 11px;
+            font-size: 13px;
             box-sizing: border-box;
-            -webkit-appearance: none;
-            touch-action: manipulation;
-            height: 26px; /* 固定输入框高度 */
-            min-height: 26px;
-            max-height: 26px;
-            line-height: 24px;
+            height: 30px;
+            min-height: 30px;
+            line-height: 26px;
         }
         
         .task-table textarea {
             resize: none;
-            height: 26px !important;
-            min-height: 26px !important;
-            max-height: 26px !important;
-            font-size: 11px;
-            line-height: 1.2;
-            padding: 2px 3px;
+            height: 30px !important;
+            min-height: 30px !important;
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 3px 4px;
         }
         
         .task-table .handwrite-box {
             width: 100%;
-            height: 26px;
+            height: 30px;
             border: none;
             background: transparent;
             text-align: center;
-            font-size: 11px;
-            outline: none;
-            line-height: 26px;
+            font-size: 13px;
+            line-height: 30px;
         }
         
         .task-table select {
-            padding: 0;
-            height: 26px;
-            line-height: 24px;
+            padding: 0 2px;
+            height: 30px;
+            line-height: 28px;
         }
         
-        /* 错题原因单元格特殊样式 */
         .error-reason-cell {
             position: relative;
-        }
-        
-        .error-reason-cell .handwrite-box {
-            height: 26px;
-            line-height: 26px;
         }
         
         .error-reason-hint {
@@ -381,244 +343,123 @@
             z-index: 1;
         }
         
+        /* 积分奖励区域 */
         .points-section {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         
         .points-title {
-            font-size: 14px;
+            font-size: 16px;
             color: #2c5282;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: bold;
             padding-bottom: 4px;
             border-bottom: 1px solid #ddd;
         }
         
         .points-content {
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-            flex-wrap: wrap;
+            font-size: 14px;
         }
         
         .points-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px 20px;
+            margin-bottom: 12px;
         }
         
         .point-item {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
         }
         
         .point-label {
             color: #2d3748;
             font-weight: 600;
             white-space: nowrap;
+            font-size: 14px;
         }
         
         .point-space {
-            width: 35px;
-            height: 20px;
+            width: 40px;
+            height: 22px;
             border-bottom: 1px solid #999;
-            margin-left: 5px;
-            margin-right: 10px;
+            margin-left: 8px;
+            flex-shrink: 0;
         }
         
         .total-points {
             display: flex;
             align-items: center;
-            margin-left: 20px;
-            margin-top: 10px;
+            justify-content: flex-end;
+            margin-top: 5px;
         }
         
         .total-label {
             color: #2c5282;
             font-weight: bold;
-            margin-right: 8px;
-            font-size: 14px;
+            margin-right: 10px;
+            font-size: 16px;
         }
         
         .total-space {
-            width: 70px;
-            height: 22px;
+            width: 80px;
+            height: 24px;
             border-bottom: 2px solid #2c5282;
         }
         
-        .teacher-comment {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-        }
-        
-        .teacher-comment label {
-            display: block;
-            font-size: 14px;
-            color: #2d3748;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        
-        .comment-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        
-        .good-options, .bad-options {
-            padding: 8px;
-            border-radius: 5px;
-            height: 100%;
-        }
-        
-        .good-options {
-            background-color: #f0fff4;
-            border: 1px solid #9ae6b4;
-        }
-        
-        .bad-options {
-            background-color: #fff5f5;
-            border: 1px solid #fc8181;
-        }
-        
-        .option-title {
-            font-size: 12px;
-            color: #333;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .good-options .option-title {
-            color: #276749;
-        }
-        
-        .bad-options .option-title {
-            color: #c53030;
-        }
-        
-        .option-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 3px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-        
-        .option-item span {
-            margin-left: 5px;
-        }
-        
+        /* 底部 - 修改文字并放大字体 */
         .footer {
-            margin-top: 12px;
+            margin-top: 15px;
             text-align: center;
-            color: #666;
-            font-size: 11px;
+            color: #2c5282;
+            font-size: 14px;
+            font-weight: bold;
             padding-top: 8px;
             border-top: 1px solid #eee;
         }
         
-        /* 移动设备适配 - 保持A4尺寸，但可以缩放 */
+        /* 移动设备适配 */
         @media screen and (max-width: 850px) {
             body {
                 padding: 10px;
                 align-items: flex-start;
-                justify-content: flex-start;
                 overflow-x: auto;
-                overflow-y: auto;
             }
             
             .a4-container {
-                width: 794px;
-                min-height: 1123px;
-                padding: 20px 25px;
-                margin: 0 auto 20px;
-                transform-origin: top left;
                 transform: scale(calc(min(100vw - 20px, 850px) / 794));
                 margin-left: max(0px, calc((100vw - 794px) / 2));
             }
             
-            .controls {
-                position: sticky;
-                top: 0;
-                left: 0;
-                right: 0;
-                padding: 10px;
-                background-color: #f0f2f5;
-                z-index: 1000;
-                max-width: 100%;
-            }
-            
-            .pdf-btn {
-                padding: 12px 20px;
-                font-size: 16px;
-                min-width: 150px;
-                max-width: 250px;
-            }
-            
-            /* 信息区域保持水平排列 */
             .info-section {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding-bottom: 5px;
+                gap: 4px;
             }
             
             .info-item {
-                flex: 0 0 auto;
-                width: 180px;
-                margin-right: 15px;
+                padding: 0 2px;
+                height: 24px;
             }
             
-            .info-item:last-child {
-                margin-right: 0;
-            }
-            
-            /* 表格在移动端保持原样 */
-            .task-table {
+            .info-item label {
                 font-size: 11px;
             }
             
-            .task-table th, .task-table td {
-                padding: 2px 1px;
+            .info-item input {
+                font-size: 13px;
+                height: 14px;
+                line-height: 14px;
             }
             
-            .task-table input, .task-table select, .task-table textarea {
-                font-size: 10px;
-                height: 24px;
-                min-height: 24px;
-                max-height: 24px;
+            .task-table th {
+                font-size: 12px;
             }
             
-            .task-table textarea {
-                height: 24px !important;
-                min-height: 24px !important;
-                max-height: 24px !important;
-            }
-            
-            /* 其他元素保持原样 */
-            .template-content {
-                grid-template-columns: repeat(3, 1fr);
+            .points-items {
                 gap: 8px;
             }
             
-            .comment-options {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            
-            .points-content {
-                flex-direction: row;
-                align-items: center;
-            }
-            
-            .total-points {
-                margin-left: 20px;
-                margin-top: 0;
-            }
-            
-            /* 提示用户可以缩放查看 */
             .mobile-hint {
                 display: block;
                 text-align: center;
@@ -642,7 +483,7 @@
                 overflow: visible;
             }
             
-            .controls {
+            .controls, .mobile-hint, .template-toggle, .error-reason-hint {
                 display: none;
             }
             
@@ -652,57 +493,12 @@
                 margin: 0;
                 width: 210mm;
                 height: 297mm;
-                page-break-inside: avoid;
-                font-size: 12px;
                 border: none;
-                overflow: visible;
                 transform: none !important;
-            }
-            
-            /* 打印时确保表格样式正确 */
-            .task-table {
-                table-layout: fixed !important;
-            }
-            
-            /* 更新打印时的列宽 */
-            .task-table th:nth-child(1),
-            .task-table td:nth-child(1) {
-                width: 8% !important;
-            }
-            
-            .task-table th:nth-child(2),
-            .task-table td:nth-child(2) {
-                width: 42% !important; /* 从44%减少到42% */
-            }
-            
-            .task-table th:nth-child(3),
-            .task-table td:nth-child(3) {
-                width: 10% !important; /* 从8%增加到10% */
-            }
-            
-            .task-table th:nth-child(4),
-            .task-table td:nth-child(4) {
-                width: 8% !important;
-            }
-            
-            .task-table th:nth-child(5),
-            .task-table td:nth-child(5) {
-                width: 8% !important;
-            }
-            
-            .task-table th:nth-child(6),
-            .task-table td:nth-child(6) {
-                width: 8% !important;
-            }
-            
-            .task-table th:nth-child(7),
-            .task-table td:nth-child(7) {
-                width: 16% !important;
             }
             
             .info-item input {
                 border-bottom: 1px solid #000 !important;
-                -webkit-text-fill-color = '#000' !important;
                 color: #000 !important;
                 background: transparent !important;
             }
@@ -734,35 +530,18 @@
             
             .error-reason-templates {
                 background-color: #f7fafc !important;
-                -webkit-print-color-adjust: exact;
                 border: 1px solid #000;
+                -webkit-print-color-adjust: exact;
             }
             
             .template-subject {
                 background-color: white !important;
-                -webkit-print-color-adjust: exact;
                 border: 1px solid #ddd;
-            }
-            
-            .template-item {
-                color: #000000 !important;
                 -webkit-print-color-adjust: exact;
             }
             
             .point-space, .total-space {
                 border-bottom: 1px solid #000;
-            }
-            
-            .error-reason-hint {
-                display: none;
-            }
-            
-            .template-toggle {
-                display: none;
-            }
-            
-            .mobile-hint {
-                display: none;
             }
         }
     </style>
@@ -846,6 +625,97 @@
                 </tr>
             </thead>
             <tbody id="task-body">
+                <!-- 10行作业任务 -->
+                <tr>
+                    <td class="subject-cell">
+                        <select class="subject-select">
+                            <option value=""></option>
+                            <option value="math">数学</option>
+                            <option value="chinese">语文</option>
+                            <option value="english">英语</option>
+                            <option value="anqin">安亲作业</option>
+                        </select>
+                    </td>
+                    <td class="task-cell">
+                        <textarea class="task-content"></textarea>
+                    </td>
+                    <td class="time-cell">
+                        <input type="number" class="estimate-time" min="0" max="180">
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="error-reason-cell">
+                        <div class="handwrite-box"></div>
+                        <div class="error-reason-hint">手写区域</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="subject-cell">
+                        <select class="subject-select">
+                            <option value=""></option>
+                            <option value="math">数学</option>
+                            <option value="chinese">语文</option>
+                            <option value="english">英语</option>
+                            <option value="anqin">安亲作业</option>
+                        </select>
+                    </td>
+                    <td class="task-cell">
+                        <textarea class="task-content"></textarea>
+                    </td>
+                    <td class="time-cell">
+                        <input type="number" class="estimate-time" min="0" max="180">
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="error-reason-cell">
+                        <div class="handwrite-box"></div>
+                        <div class="error-reason-hint">手写区域</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="subject-cell">
+                        <select class="subject-select">
+                            <option value=""></option>
+                            <option value="math">数学</option>
+                            <option value="chinese">语文</option>
+                            <option value="english">英语</option>
+                            <option value="anqin">安亲作业</option>
+                        </select>
+                    </td>
+                    <td class="task-cell">
+                        <textarea class="task-content"></textarea>
+                    </td>
+                    <td class="time-cell">
+                        <input type="number" class="estimate-time" min="0" max="180">
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="handwrite-cell">
+                        <div class="handwrite-box"></div>
+                    </td>
+                    <td class="error-reason-cell">
+                        <div class="handwrite-box"></div>
+                        <div class="error-reason-hint">手写区域</div>
+                    </td>
+                </tr>
                 <tr>
                     <td class="subject-cell">
                         <select class="subject-select">
@@ -1095,30 +965,10 @@
             </div>
         </div>
         
-        <div class="teacher-comment">
-            <label>教师评语（请勾选适用项）：</label>
-            <div class="comment-options">
-                <div class="good-options">
-                    <div class="option-title">好的方面：</div>
-                    <div class="option-item">□ 作业完成认真仔细</div>
-                    <div class="option-item">□ 独立思考能力强</div>
-                    <div class="option-item">□ 注意力集中，效率高</div>
-                    <div class="option-item">□ 书写工整规范</div>
-                    <div class="option-item">□ 积极提问，善于思考</div>
-                </div>
-                <div class="bad-options">
-                    <div class="option-title">需改进方面：</div>
-                    <div class="option-item">□ 作业完成较马虎</div>
-                    <div class="option-item">□ 注意力不集中</div>
-                    <div class="option-item">□ 需要多次提醒</div>
-                    <div class="option-item">□ 遇到困难容易放弃</div>
-                    <div class="option-item">□ 书写潦草不规范</div>
-                </div>
-            </div>
-        </div>
+        <!-- 教师评语区域已删除 -->
         
         <div class="footer">
-            <p>贝尔安亲托管中心 作业任务单</p>
+            <p>贝尔安亲一小校区  作业任务单</p>
         </div>
     </div>
 
@@ -1129,7 +979,6 @@
         // 初始化日期为今天
         document.getElementById('date').value = formatDate(new Date());
         
-        // 格式化日期为YYYY/MM/DD
         function formatDate(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1137,9 +986,7 @@
             return `${year}/${month}/${day}`;
         }
         
-        // DOM加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
-            // 绑定按钮事件
             const pdfBtn = document.getElementById('pdfBtn');
             const templateToggle = document.getElementById('templateToggle');
             
@@ -1159,7 +1006,6 @@
                 }, { passive: false });
             }
             
-            // 绑定科目选择事件
             const subjectSelects = document.querySelectorAll('.subject-select');
             subjectSelects.forEach(select => {
                 select.addEventListener('change', function() {
@@ -1167,49 +1013,34 @@
                 });
             });
             
-            // 初始化错误原因提示
             initErrorReasonHints();
-            
-            // 添加双击缩放功能
             setupDoubleClickZoom();
             
-            // 防止iOS上的双击缩放
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function(event) {
                 const now = Date.now();
-                if (now - lastTouchEnd <= 300) {
-                    event.preventDefault();
-                }
+                if (now - lastTouchEnd <= 300) event.preventDefault();
                 lastTouchEnd = now;
             }, false);
             
-            // 禁止双指缩放
             document.addEventListener('gesturestart', function(event) {
                 event.preventDefault();
             });
         });
         
-        // 设置双击缩放功能
         function setupDoubleClickZoom() {
             let lastTap = 0;
             let scale = 1;
             const container = document.querySelector('.a4-container');
-            
             if (!container) return;
             
             container.addEventListener('touchstart', function(e) {
                 const currentTime = new Date().getTime();
                 const tapLength = currentTime - lastTap;
-                
                 if (tapLength < 500 && tapLength > 0) {
-                    // 双击事件
                     e.preventDefault();
-                    
-                    // 切换缩放
                     scale = scale === 1 ? 1.5 : 1;
                     container.style.transform = `scale(${scale})`;
-                    
-                    // 更新提示
                     const mobileHint = document.getElementById('mobileHint');
                     if (mobileHint) {
                         mobileHint.textContent = scale === 1 ? '双击可以放大查看' : '双击恢复原大小';
@@ -1219,7 +1050,6 @@
             });
         }
         
-        // 切换错误原因模板的显示/隐藏
         function toggleTemplates() {
             const templateContent = document.getElementById('template-content');
             if (templateContent.style.display === 'none') {
@@ -1231,42 +1061,26 @@
             }
         }
         
-        // 初始化错误原因提示
         function initErrorReasonHints() {
             const subjectSelects = document.querySelectorAll('.subject-select');
-            subjectSelects.forEach(select => {
-                updateErrorReasonHint(select);
-            });
+            subjectSelects.forEach(select => updateErrorReasonHint(select));
         }
         
-        // 更新错误原因提示
         function updateErrorReasonHint(selectElement) {
             const row = selectElement.closest('tr');
             if (!row) return;
-            
             const errorReasonCell = row.querySelector('.error-reason-cell');
             const hint = errorReasonCell ? errorReasonCell.querySelector('.error-reason-hint') : null;
-            
             if (!hint) return;
             
             const subject = selectElement.value;
             let subjectName = '';
-            
             switch(subject) {
-                case 'math':
-                    subjectName = '数学';
-                    break;
-                case 'chinese':
-                    subjectName = '语文';
-                    break;
-                case 'english':
-                    subjectName = '英语';
-                    break;
-                case 'anqin':
-                    subjectName = '安亲作业';
-                    break;
-                default:
-                    subjectName = '';
+                case 'math': subjectName = '数学'; break;
+                case 'chinese': subjectName = '语文'; break;
+                case 'english': subjectName = '英语'; break;
+                case 'anqin': subjectName = '安亲作业'; break;
+                default: subjectName = '';
             }
             
             if (subjectName) {
@@ -1280,28 +1094,19 @@
             }
         }
         
-        // 处理PDF导出 - 修复输入内容为空的问题，特别是科目选择框
         async function handlePDFExport() {
             try {
                 const pdfBtn = document.getElementById('pdfBtn');
                 const originalText = pdfBtn.innerHTML;
-                
-                // 显示加载状态
                 pdfBtn.innerHTML = '正在生成PDF...';
                 pdfBtn.disabled = true;
                 
-                // 获取A4容器
                 const element = document.getElementById('a4-content');
-                
-                // 保存原始样式
                 const originalBodyOverflow = document.body.style.overflow;
                 const originalContainerStyle = element.style.cssText;
                 
-                // 关键修复：在截图前，强制更新所有输入字段的值到DOM
                 forceUpdateInputValues();
                 
-                // 在截图前，将A4容器恢复到原始大小和位置
-                // 移除任何缩放和变换
                 element.style.transform = 'none';
                 element.style.position = 'fixed';
                 element.style.top = '0';
@@ -1315,7 +1120,6 @@
                 element.style.zIndex = '9999';
                 element.style.backgroundColor = '#ffffff';
                 
-                // 确保body没有滚动
                 document.body.style.overflow = 'hidden';
                 document.body.style.position = 'relative';
                 document.body.style.width = '794px';
@@ -1324,56 +1128,38 @@
                 document.body.style.margin = '0';
                 document.body.style.backgroundColor = '#ffffff';
                 
-                // 隐藏不需要的元素
                 const templateToggle = document.getElementById('templateToggle');
                 const errorReasonHints = document.querySelectorAll('.error-reason-hint');
                 const originalToggleDisplay = templateToggle ? templateToggle.style.display : '';
                 const mobileHint = document.querySelector('.mobile-hint');
                 const originalMobileHintDisplay = mobileHint ? mobileHint.style.display : '';
                 
-                if (templateToggle) {
-                    templateToggle.style.display = 'none';
-                }
+                if (templateToggle) templateToggle.style.display = 'none';
+                if (mobileHint) mobileHint.style.display = 'none';
+                errorReasonHints.forEach(hint => hint.style.display = 'none');
                 
-                if (mobileHint) {
-                    mobileHint.style.display = 'none';
-                }
-                
-                errorReasonHints.forEach(hint => {
-                    hint.style.display = 'none';
-                });
-                
-                // 等待一小段时间确保样式应用
                 await new Promise(resolve => setTimeout(resolve, 200));
                 
-                // 使用html2canvas将元素转换为canvas
                 const canvas = await html2canvas(element, {
-                    scale: 2, // 提高分辨率
+                    scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
                     allowTaint: false,
-                    foreignObjectRendering: true, // 使用foreignObject以获得更好的文本渲染
+                    foreignObjectRendering: true,
                     width: 794,
                     height: 1123,
                     x: 0,
                     y: 0,
                     onclone: function(clonedDoc) {
-                        // 关键修复：在克隆的文档中，将所有的select元素替换为显示选中文本的div
                         const clonedSelects = clonedDoc.querySelectorAll('.subject-select');
                         clonedSelects.forEach(clonedSelect => {
                             const selectedValue = clonedSelect.value;
                             let displayText = '';
-                            
-                            // 获取选中的文本
                             if (selectedValue) {
                                 const selectedOption = clonedSelect.querySelector(`option[value="${selectedValue}"]`);
-                                if (selectedOption) {
-                                    displayText = selectedOption.textContent;
-                                }
+                                if (selectedOption) displayText = selectedOption.textContent;
                             }
-                            
-                            // 创建一个div来显示科目文本
                             const subjectDisplay = clonedDoc.createElement('div');
                             subjectDisplay.textContent = displayText;
                             subjectDisplay.style.width = '100%';
@@ -1387,72 +1173,39 @@
                             subjectDisplay.style.border = 'none';
                             subjectDisplay.style.borderRadius = '0';
                             subjectDisplay.style.padding = '0';
-                            subjectDisplay.style.margin = '0';
-                            
-                            // 替换select元素
                             clonedSelect.parentNode.replaceChild(subjectDisplay, clonedSelect);
                         });
                         
-                        // 关键修复：将所有输入框替换为只显示内容的div，确保表格边框完整
                         const clonedInputs = clonedDoc.querySelectorAll('input, textarea');
                         clonedInputs.forEach(clonedInput => {
                             const value = clonedInput.value || '';
                             const displayDiv = clonedDoc.createElement('div');
-                            
-                            // 设置div样式 - 透明背景，无边框
                             displayDiv.textContent = value;
                             displayDiv.style.width = '100%';
                             displayDiv.style.height = '100%';
                             displayDiv.style.display = 'flex';
                             displayDiv.style.alignItems = 'center';
                             displayDiv.style.justifyContent = 'center';
-                            displayDiv.style.fontSize = '11px';
+                            displayDiv.style.fontSize = '13px';
                             displayDiv.style.color = '#000000';
                             displayDiv.style.backgroundColor = 'transparent';
                             displayDiv.style.border = 'none';
-                            displayDiv.style.borderRadius = '0';
                             displayDiv.style.padding = '0';
-                            displayDiv.style.margin = '0';
-                            displayDiv.style.boxShadow = 'none';
-                            displayDiv.style.outline = 'none';
-                            displayDiv.style.lineHeight = '26px';
-                            
-                            // 对于textarea，可能需要换行显示
                             if (clonedInput.tagName === 'TEXTAREA') {
                                 displayDiv.style.whiteSpace = 'pre-wrap';
                                 displayDiv.style.wordBreak = 'break-all';
                                 displayDiv.style.textAlign = 'left';
                                 displayDiv.style.justifyContent = 'flex-start';
-                                displayDiv.style.padding = '2px 3px';
+                                displayDiv.style.padding = '2px 4px';
                             }
-                            
-                            // 替换输入框
                             clonedInput.parentNode.replaceChild(displayDiv, clonedInput);
                         });
                         
-                        // 关键修复：确保表格单元格的边框在PDF中清晰可见
                         const clonedTableCells = clonedDoc.querySelectorAll('.task-table th, .task-table td');
                         clonedTableCells.forEach(cell => {
-                            // 确保表格边框在PDF中可见
-                            cell.style.border = '1px solid #000000 !important';
-                            cell.style.borderCollapse = 'collapse';
-                            cell.style.borderSpacing = '0';
-                            // 确保边框不被覆盖
-                            cell.style.position = 'relative';
-                            cell.style.zIndex = '1';
+                            cell.style.border = '1px solid #000000';
                         });
                         
-                        // 关键修改：处理所有手写区域的边框
-                        const clonedHandwriteBoxes = clonedDoc.querySelectorAll('.handwrite-box');
-                        clonedHandwriteBoxes.forEach(box => {
-                            // 手写区域也设置为透明
-                            box.style.border = 'none';
-                            box.style.background = 'transparent';
-                            box.style.outline = 'none';
-                            box.style.zIndex = '1';
-                        });
-                        
-                        // 确保克隆的元素也有正确的尺寸
                         const clonedElement = clonedDoc.getElementById('a4-content');
                         if (clonedElement) {
                             clonedElement.style.transform = 'none';
@@ -1467,34 +1220,15 @@
                             clonedElement.style.margin = '0';
                             clonedElement.style.zIndex = '9999';
                             clonedElement.style.backgroundColor = '#ffffff';
-                            
-                            // 确保表格边框清晰
-                            const clonedTable = clonedElement.querySelector('.task-table');
-                            if (clonedTable) {
-                                clonedTable.style.borderCollapse = 'collapse !important';
-                                clonedTable.style.borderSpacing = '0 !important';
-                                clonedTable.style.border = '1px solid #000000 !important';
-                            }
-                            
-                            // 确保所有表格边框可见
-                            const allTableCells = clonedElement.querySelectorAll('th, td');
-                            allTableCells.forEach(cell => {
-                                cell.style.border = '1px solid #000000 !important';
-                            });
                         }
                         
-                        // 隐藏按钮和提示
                         const clonedToggle = clonedDoc.getElementById('templateToggle');
                         const clonedHints = clonedDoc.querySelectorAll('.error-reason-hint');
                         const clonedMobileHint = clonedDoc.querySelector('.mobile-hint');
-                        
                         if (clonedToggle) clonedToggle.style.display = 'none';
                         if (clonedMobileHint) clonedMobileHint.style.display = 'none';
-                        clonedHints.forEach(hint => {
-                            hint.style.display = 'none';
-                        });
+                        clonedHints.forEach(hint => hint.style.display = 'none');
                         
-                        // 设置克隆的body样式
                         clonedDoc.body.style.overflow = 'hidden';
                         clonedDoc.body.style.position = 'relative';
                         clonedDoc.body.style.width = '794px';
@@ -1502,93 +1236,50 @@
                         clonedDoc.body.style.padding = '0';
                         clonedDoc.body.style.margin = '0';
                         clonedDoc.body.style.backgroundColor = '#ffffff';
-                        
-                        // 额外等待时间确保样式应用
-                        setTimeout(() => {
-                            // 强制重绘以确保边框显示
-                            clonedDoc.body.offsetHeight;
-                        }, 10);
                     }
                 });
                 
-                // 恢复原始样式
                 document.body.style.cssText = '';
                 element.style.cssText = originalContainerStyle;
                 
-                if (templateToggle) {
-                    templateToggle.style.display = originalToggleDisplay;
-                }
+                if (templateToggle) templateToggle.style.display = originalToggleDisplay;
+                if (mobileHint && originalMobileHintDisplay) mobileHint.style.display = originalMobileHintDisplay;
+                errorReasonHints.forEach(hint => hint.style.display = '');
                 
-                if (mobileHint && originalMobileHintDisplay) {
-                    mobileHint.style.display = originalMobileHintDisplay;
-                }
-                
-                errorReasonHints.forEach(hint => {
-                    hint.style.display = '';
-                });
-                
-                // 创建PDF
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                
-                // A4尺寸: 210mm x 297mm
                 const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                
-                // 计算图片尺寸以适应A4
                 const imgWidth = pdfWidth;
                 const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-                
-                // 将canvas图像添加到PDF
                 const imgData = canvas.toDataURL('image/png', 1.0);
                 pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, '', 'FAST');
                 
-                // 保存PDF
                 const studentName = document.getElementById('student-name').value || '学生作业';
                 const date = document.getElementById('date').value || new Date().toISOString().slice(0, 10);
-                const fileName = `贝尔安亲作业任务单_${studentName}_${date}.pdf`;
+                pdf.save(`贝尔安亲作业任务单_${studentName}_${date}.pdf`);
                 
-                // 保存PDF文件
-                pdf.save(fileName);
-                
-                // 恢复按钮状态
                 pdfBtn.innerHTML = originalText;
                 pdfBtn.disabled = false;
                 
             } catch (error) {
                 console.error('导出PDF失败:', error);
-                
-                // 恢复按钮状态
                 const pdfBtn = document.getElementById('pdfBtn');
                 if (pdfBtn) {
                     pdfBtn.innerHTML = '导出PDF文件';
                     pdfBtn.disabled = false;
                 }
-                
-                // 显示错误提示
-                alert('PDF导出失败，请尝试以下方法：\n\n1. 确保浏览器支持导出功能\n2. 截图后手动保存\n\n错误信息：' + error.message);
+                alert('PDF导出失败，请尝试截图后手动保存。\n错误信息：' + error.message);
             }
         }
         
-        // 关键修复函数：强制更新所有输入字段的值
         function forceUpdateInputValues() {
-            // 触发所有输入框的change事件以确保值已更新
             const allInputs = document.querySelectorAll('input, textarea, select');
             allInputs.forEach(input => {
-                // 触发change事件
                 const event = new Event('change', { bubbles: true });
                 input.dispatchEvent(event);
-                
-                // 对于textarea，还需要更新其内部文本
-                if (input.tagName === 'TEXTAREA') {
-                    input.textContent = input.value;
-                }
-                
-                // 确保值被设置
+                if (input.tagName === 'TEXTAREA') input.textContent = input.value;
                 input.setAttribute('value', input.value);
             });
-            
-            // 强制浏览器重绘
             document.body.offsetHeight;
         }
     </script>
